@@ -7,6 +7,8 @@ import { HomePage } from '../pages/home/home';
 import { TabsPage } from '../pages/tabs/tabs';
 
 import { PokemonService } from './pokemon/pokemon-service';
+import {IonicStorageModule} from "@ionic/storage";
+import {DataManagerService} from "./data-saver/data-manager-service";
 
 @NgModule({
   declarations: [
@@ -17,7 +19,8 @@ import { PokemonService } from './pokemon/pokemon-service';
     TabsPage
   ],
   imports: [
-    IonicModule.forRoot(MyApp)
+    IonicModule.forRoot(MyApp),
+    IonicStorageModule.forRoot(MyApp)
   ],
   bootstrap: [IonicApp],
   entryComponents: [
@@ -27,6 +30,6 @@ import { PokemonService } from './pokemon/pokemon-service';
     HomePage,
     TabsPage
   ],
-  providers: [{provide: ErrorHandler, useClass: IonicErrorHandler}, PokemonService]
+  providers: [{provide: ErrorHandler, useClass: IonicErrorHandler}, PokemonService, DataManagerService]
 })
 export class AppModule {}
