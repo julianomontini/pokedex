@@ -17,11 +17,11 @@ export class HomePage {
   }
 
   next(){
-    this.pokeServ.getPokemonListNext().subscribe(data => {this.pokemonList = data});
+    this.pokeServ.getPokemonListNext().subscribe(data => {console.log(data)});
   }
 
   previous(){
-    this.pokeServ.getPokemonListPrevious().subscribe(data => {this.pokemonList = data});
+    this.pokeServ.getPokemonListPrevious().subscribe(data => {console.log(data)});
   }
 
 }

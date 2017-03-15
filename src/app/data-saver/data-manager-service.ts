@@ -1,5 +1,6 @@
 import { Storage } from '@ionic/storage';
-import {Injectable} from "@angular/core";
+import { Injectable } from "@angular/core";
+import { Observable } from "rxjs/Observable";
 
 @Injectable()
 export class DataManagerService {
@@ -18,12 +19,8 @@ export class DataManagerService {
 
   }
 
-  retrieveData(key: string) : Promise<any>{
-
-    return this.storage.get(key).then((object: any) => {
-      return object;
-    });
-
+  retrieveData(key: string) : Observable<any>{
+    return Observable.fromPromise(this.storage.get(key));
   }
 
 }
