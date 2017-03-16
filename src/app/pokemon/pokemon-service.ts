@@ -1,8 +1,9 @@
-import { Injectable } from "@angular/core";
+import { Injectable, EventEmitter } from "@angular/core";
 import { Http, Response } from '@angular/http';
 import {Observable} from 'rxjs/Rx';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
+import 'rxjs/add/operator/toPromise';
 
 import { Pokemon } from './pokemon-class';
 import { DataManagerService } from '../data-saver/data-manager-service';
@@ -13,12 +14,18 @@ export class PokemonService{
     private previousUrl: string;
     private nextUrl: string = "http://pokeapi.co/api/v2/pokemon/?limit=";
     private isFirstCall: boolean = true;
+    private pokemonList: Pokemon[] = [];
+    public pokemonSubscription: EventEmitter<Pokemon[]> = new EventEmitter();
 
     constructor(private http: Http, private dataManager: DataManagerService){
 
     }
 
-    public getPokemonListNext(limit?:number): Promise<any>{
+    private updateSubscription(data : Pokemon[]){
+        this.pokemonSubscription.emit(data);
+    }
+
+    public getPokemonListNext(limit?:number){
 
         if(this.isFirstCall){
             this.nextUrl += limit ? limit : "20";
@@ -26,18 +33,26 @@ export class PokemonService{
         }
 
         if(this.nextUrl == null)
-            return Promise.resolve([]);
+            this.updateSubscription([]);
 
-        return this.getCacheData(this.nextUrl);
+        this.getCacheData(this.nextUrl).then( (data : Observable<Pokemon[]>) => {
+            data.subscribe(pokemons => {
+                this.updateSubscription(pokemons);
+            })
+        });
 
     }
 
-    public getPokemonListPrevious(limit?:number): Promise<any>{
+    public getPokemonListPrevious(limit?:number){
 
         if(this.previousUrl == null)
-            return Promise.resolve([]);
+            this.updateSubscription([]);
 
-        return this.getCacheData(this.previousUrl);
+        this.getCacheData(this.previousUrl).then( (data : Observable<Pokemon[]>) => {
+            data.subscribe(pokemons => {
+                this.updateSubscription(pokemons);
+            })
+        });
 
     }
 
@@ -67,25 +82,20 @@ export class PokemonService{
             return arrayPokemons;
     }
 
-    private getCacheData(key: string) : Promise<any>{
+    private getCacheData(key: string) : Promise<Observable<Pokemon[]>>{
 
         return this.dataManager.retrieveData(key).then(data => {
 
             if(data != null){
-                this.dataManager.saveData(this.nextUrl, data);
-                let dataToJson = JSON.parse(data['_body']);
-                return Observable.of(this.convertResponseToArray(dataToJson));
-
+                Observable.of(this.convertResponseToArray(data));
             }
 
              return this.http.get(key).map((res: Response) => {
-                this.dataManager.saveData(this.nextUrl, res);
-                let resToJson = res.json();
-                return this.convertResponseToArray(resToJson);
-
+                this.dataManager.saveData(this.nextUrl, res.json());
+                return this.convertResponseToArray(res.json());
             });
 
-        }).then();
+        });
 
     }
 }
