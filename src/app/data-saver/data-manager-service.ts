@@ -19,8 +19,8 @@ export class DataManagerService {
 
   }
 
-  retrieveData(key: string) : Observable<any>{
-    return Observable.fromPromise(this.storage.get(key));
+  retrieveData(key: string) : Promise<any>{
+    return this.storage.get(key);
   }
 
 }

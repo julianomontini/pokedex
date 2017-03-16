@@ -18,7 +18,7 @@ export class PokemonService{
 
     }
 
-    public getPokemonListNext(limit?:number): Observable<Pokemon[]>{
+    public getPokemonListNext(limit?:number): Promise<any>{
 
         if(this.isFirstCall){
             this.nextUrl += limit ? limit : "20";
@@ -26,18 +26,16 @@ export class PokemonService{
         }
 
         if(this.nextUrl == null)
-            return Observable.of([]);
+            return Promise.resolve([]);
 
-        return this.getCacheData(this.nextUrl).map((a) => {
-            return a;
-        });
+        return this.getCacheData(this.nextUrl);
 
     }
 
-    public getPokemonListPrevious(limit?:number): Observable<Pokemon[]>{
+    public getPokemonListPrevious(limit?:number): Promise<any>{
 
         if(this.previousUrl == null)
-            return Observable.of([]);
+            return Promise.resolve([]);
 
         return this.getCacheData(this.previousUrl);
 
@@ -69,23 +67,25 @@ export class PokemonService{
             return arrayPokemons;
     }
 
-    private getCacheData(key: string) : Observable<any>{
+    private getCacheData(key: string) : Promise<any>{
 
-        return this.dataManager.retrieveData(key).map(data => {
-            console.log(data);
+        return this.dataManager.retrieveData(key).then(data => {
+
             if(data != null){
-                // this.dataManager.saveData(this.nextUrl, data);
-                let dataToJson = data;
-                return this.convertResponseToArray(dataToJson);
+                this.dataManager.saveData(this.nextUrl, data);
+                let dataToJson = JSON.parse(data['_body']);
+                return Observable.of(this.convertResponseToArray(dataToJson));
+
             }
 
-             this.http.get(key).map((res: Response) => {
-                 console.log(res);
-                this.dataManager.saveData(this.nextUrl, res.json());
+             return this.http.get(key).map((res: Response) => {
+                this.dataManager.saveData(this.nextUrl, res);
                 let resToJson = res.json();
                 return this.convertResponseToArray(resToJson);
 
             });
-        });
+
+        }).then();
+
     }
 }
