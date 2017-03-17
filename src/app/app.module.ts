@@ -6,7 +6,7 @@ import { ContactPage } from '../pages/contact/contact';
 import { HomePage } from '../pages/home/home';
 import { TabsPage } from '../pages/tabs/tabs';
 
-import { PokemonService } from './pokemon/pokemon-service';
+import { PokemonOverviewService } from './pokemon/pokemon-overview-service';
 import {IonicStorageModule} from "@ionic/storage";
 import {DataManagerService} from "./data-saver/data-manager-service";
 
@@ -30,6 +30,6 @@ import {DataManagerService} from "./data-saver/data-manager-service";
     HomePage,
     TabsPage
   ],
-  providers: [{provide: ErrorHandler, useClass: IonicErrorHandler}, PokemonService, DataManagerService]
+  providers: [{provide: ErrorHandler, useClass: IonicErrorHandler}, PokemonOverviewService, DataManagerService]
 })
 export class AppModule {}

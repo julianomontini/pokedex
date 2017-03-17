@@ -1,8 +1,8 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { NavController } from 'ionic-angular';
 
-import { PokemonService } from '../../app/pokemon/pokemon-service';
-import { Pokemon } from "../../app/pokemon/pokemon-class";
+import { PokemonOverviewService } from '../../app/pokemon/pokemon-overview-service';
+import { PokemonOverview } from "../../app/pokemon/pokemon-overview-class";
 import { Subscription } from "rxjs/Subscription";
 
 @Component({
@@ -11,10 +11,10 @@ import { Subscription } from "rxjs/Subscription";
 })
 export class HomePage implements OnInit, OnDestroy{
 
-  private pokemonList: Pokemon[] = [];
+  private pokemonList: PokemonOverview[] = [];
   private subscription: Subscription;
 
-  constructor(public navCtrl: NavController, private pokeServ: PokemonService) {
+  constructor(public navCtrl: NavController, private pokeServ: PokemonOverviewService) {
 
   }
 
@@ -27,7 +27,7 @@ export class HomePage implements OnInit, OnDestroy{
   }
 
   ngOnInit(){
-    this.subscription = this.pokeServ.pokemonSubscription.subscribe( (data : Pokemon[]) =>{
+    this.subscription = this.pokeServ.pokemonSubscription.subscribe( (data : PokemonOverview[]) =>{
       this.pokemonList = data;
     });
   }

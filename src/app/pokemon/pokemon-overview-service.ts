@@ -5,23 +5,22 @@ import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/toPromise';
 
-import { Pokemon } from './pokemon-class';
+import { PokemonOverview } from './pokemon-overview-class';
 import { DataManagerService } from '../data-saver/data-manager-service';
 
 @Injectable()
-export class PokemonService{
+export class PokemonOverviewService{
 
     private previousUrl: string;
     private nextUrl: string = "http://pokeapi.co/api/v2/pokemon/?limit=";
     private isFirstCall: boolean = true;
-    private pokemonList: Pokemon[] = [];
-    public pokemonSubscription: EventEmitter<Pokemon[]> = new EventEmitter();
+    public pokemonSubscription: EventEmitter<PokemonOverview[]> = new EventEmitter();
 
     constructor(private http: Http, private dataManager: DataManagerService){
 
     }
 
-    private updateSubscription(data : Pokemon[]){
+    private updateSubscription(data : PokemonOverview[]){
         this.pokemonSubscription.emit(data);
     }
 
@@ -35,7 +34,7 @@ export class PokemonService{
         if(this.nextUrl == null)
             this.updateSubscription([]);
 
-        this.getCacheData(this.nextUrl).then( (data : Observable<Pokemon[]>) => {
+        this.getCacheData(this.nextUrl).then( (data : Observable<PokemonOverview[]>) => {
             data.subscribe(pokemons => {
                 this.updateSubscription(pokemons);
             })
@@ -48,7 +47,7 @@ export class PokemonService{
         if(this.previousUrl == null)
             this.updateSubscription([]);
 
-        this.getCacheData(this.previousUrl).then( (data : Observable<Pokemon[]>) => {
+        this.getCacheData(this.previousUrl).then( (data : Observable<PokemonOverview[]>) => {
             data.subscribe(pokemons => {
                 this.updateSubscription(pokemons);
             })
@@ -64,7 +63,7 @@ export class PokemonService{
         return (this.previousUrl != null);
     }
 
-    private convertResponseToArray(res):Pokemon[]{
+    private convertResponseToArray(res):PokemonOverview[]{
 
             this.nextUrl = res.next;
             this.previousUrl = res.previous;
@@ -73,16 +72,16 @@ export class PokemonService{
                 return [];
             }
 
-            let arrayPokemons: Pokemon[] = [];
+            let arrayPokemons: PokemonOverview[] = [];
 
             for(let pokemon of res.results){
-                arrayPokemons.push(new Pokemon(pokemon.name, pokemon.url));
+                arrayPokemons.push(new PokemonOverview(pokemon.name, pokemon.url));
             }
 
             return arrayPokemons;
     }
 
-    private getCacheData(key: string) : Promise<Observable<Pokemon[]>>{
+    private getCacheData(key: string) : Promise<Observable<any>>{
 
         return this.dataManager.retrieveData(key).then(data => {
 
