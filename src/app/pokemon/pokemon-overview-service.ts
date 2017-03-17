@@ -5,7 +5,7 @@ import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/toPromise';
 
-import { PokemonOverview } from './pokemon-overview-class';
+import { PokemonOverview } from './pokemon-overview-interface';
 import { DataManagerService } from '../data-saver/data-manager-service';
 
 @Injectable()
@@ -75,7 +75,7 @@ export class PokemonOverviewService{
             let arrayPokemons: PokemonOverview[] = [];
 
             for(let pokemon of res.results){
-                arrayPokemons.push(new PokemonOverview(pokemon.name, pokemon.url));
+                arrayPokemons.push(pokemon);
             }
 
             return arrayPokemons;

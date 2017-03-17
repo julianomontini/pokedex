@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { NavController } from 'ionic-angular';
 
 import { PokemonOverviewService } from '../../app/pokemon/pokemon-overview-service';
-import { PokemonOverview } from "../../app/pokemon/pokemon-overview-class";
+import { PokemonOverview } from "../../app/pokemon/pokemon-overview-interface";
 import { Subscription } from "rxjs/Subscription";
 
 @Component({
