@@ -8,7 +8,8 @@ import { TabsPage } from '../pages/tabs/tabs';
 
 import { PokemonOverviewService } from './pokemon/pokemon-overview-service';
 import {IonicStorageModule} from "@ionic/storage";
-import {DataManagerService} from "./data-saver/data-manager-service";
+import { DataManagerService } from "./data-saver/data-manager-service";
+import { PokemonDetailService } from "./pokemon/pokemon-detail/pokemon-detail-service";
 
 @NgModule({
   declarations: [
@@ -30,6 +31,6 @@ import {DataManagerService} from "./data-saver/data-manager-service";
     HomePage,
     TabsPage
   ],
-  providers: [{provide: ErrorHandler, useClass: IonicErrorHandler}, PokemonOverviewService, DataManagerService]
+  providers: [{provide: ErrorHandler, useClass: IonicErrorHandler}, PokemonOverviewService, DataManagerService, PokemonDetailService]
 })
 export class AppModule {}

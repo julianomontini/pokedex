@@ -6,7 +6,7 @@ export interface PokemonDetail{
     }],
     abilities: [{
         slot: number,
-        isHidden: boolean,
+        is_hidden: boolean,
         ability: {
             url: string,
             name: string
@@ -17,7 +17,7 @@ export interface PokemonDetail{
             url: string,
             name: string
         },effort: number,
-        baseStat: number
+        base_stat: number
     }],
     name: string,
     weight: number,
@@ -25,32 +25,32 @@ export interface PokemonDetail{
         move: {
             url: string,
             name: string
-        },versionGroupDetails:[{
-            moveLeanMethod: {
+        },version_group_details:[{
+            move_lean_method: {
                 url: string,
                 name: string
-            },levelLearnedAt: number,
-            versionGroup: {
+            },level_learned_at: number,
+            version_group: {
                 url: string,
                 name: string
             }
         }]
     }],
     sprites: {
-        backFemale: string,
-        backShinyFemale: string,
-        backDefault: string,
-        frontFemale: string,
-        frontShinyFemale: string,
-        backShiny: string,
-        frontDefault: string,
-        frontShiny: string 
+        back_female: string,
+        back_shiny_female: string,
+        back_default: string,
+        front_female: string,
+        front_shiny_female: string,
+        back_shiny: string,
+        front_default: string,
+        front_shiny: string 
     },
     held_items: [{
         item: {
             url: string,
             name: string
-        },versionDetails:[{
+        },version_details:[{
             version: {
                 url: string,
                 name: string
@@ -59,7 +59,7 @@ export interface PokemonDetail{
     }],
     location_area_encounters: string,
     height: number,
-    isDefault: boolean,
+    is_default: boolean,
     species: {
         url: string,
         name: string
@@ -70,9 +70,9 @@ export interface PokemonDetail{
         version: {
             url: string,
             name: string
-        }, gameIndex: number
+        }, game_index: number
     }],
-    baseExperience: number,
+    base_experience: number,
     types: [{
         slot: number,
         type: {

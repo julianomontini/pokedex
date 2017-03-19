@@ -13,7 +13,8 @@
           (click)="next()">Next</button>
 
   <ion-list>
-    <ion-item *ngFor="let pokemon of pokemonList">
+    <ion-item *ngFor="let pokemon of pokemonList"
+              (click)="getPokemonDetail(pokemon)">
       {{pokemon.name}}
     </ion-item>
   </ion-list>
